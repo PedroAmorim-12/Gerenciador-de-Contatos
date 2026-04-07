@@ -6,56 +6,66 @@ fun menu(): Int{
 }
 
 fun validarNome(nome: String):String{
-    while(true){
-        if (!(nome.toIntOrNull() == null) || !validacaoNome(nome)) {
-            println("NOME INVALIDO!!")
-            continue
+    var vaz = ""
+        if (!(nome.all { it.isLetter() || it == ' '}) || !validacaoNome(nome)) {
+            println("NOME INVALIDO!! \n INSIRA UM NOME VALIDO!!")
+            var nomevalido = readLine().toString()
+            vaz = validarNome(nomevalido)
         }
-        return nomeContato(nome)
-    }
+        else {
+            vaz = nomeContato(nome)
+        }
+    return vaz
 }
 
 fun validarTel(telefone:Long?): Long?{
-    while(true){
+    var vaz: Long? = null
+
         if(!(validarddd(telefone))){
-            println("TELEFONE INVALIDO!!")
-            continue
+            println("TELEFONE INVALIDO!! \n INSIRA UM TELEFONE VALIDO!!!")
+            var nv = readLine()!!.toLongOrNull()
+            vaz = validarTel(nv)
         }
-        if(telefoneIgual(telefone)){
-            println("TELEFONE JA INSERIDO!!!")
-            continue
+        else if(telefoneIgual(telefone)){
+            println("TELEFONE JA INSERIDO!!! \n INSIRA UM TELEFONE NOVO!!!")
+            var nv = readLine()!!.toLongOrNull()
+            vaz = validarTel(nv)
         }
-        else return telefone
+    else vaz = telefone
 
-    }
+    return vaz
 }
 
-fun verificaEmail(email:String):String{
-    while(true) {
-        var m = email
-        m = email.lowercase()
-        if (!(validarEmail(m))) {
-            println("EMAIL INVALIDO!!")
-            continue
-        }
-        if (emailIgual(m)) {
-            println("EMAIL JA INSERIDO!!!")
-            continue
-        } else return m
+fun verificaEmail(email: String): String {
+    var vaz = ""
+    var m = email
+    m = email.lowercase()
+    if (!(validarEmail(m))) {
+        println("EMAIL INVALIDO!!")
+        var emailvalido = readLine() ?: ""
+        vaz = verificaEmail(emailvalido)
     }
-}
+    else if (emailIgual(m)) {
+        println("EMAIL JA INSERIDO!!!")
+        var emailvalido = readLine() ?: ""
+        vaz = verificaEmail(emailvalido.lowercase()) // ← lowercase aqui
+    }
+    else vaz = m
 
+    return vaz
+}
 fun cadastrar():String {
     var rodar = true
     while (rodar) {
         println("NOME DO CONTATO:")
         var ncont = readLine().toString()
-        ncont = validarNome(ncont)
-
+        ncont = nomeContato(validarNome(ncont))
+        println(ncont)
+        if(ncont == ""){ continue }
         println("Telefone:")
         var telefone = readLine()!!.toLongOrNull()
         telefone = validarTel(telefone)
-
+        println(telefone)
         println("Email:")
         var email = readLine().toString()
         verificaEmail(email)
